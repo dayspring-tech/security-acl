@@ -974,7 +974,14 @@ QUERY;
         $currentIds = array();
 
         for ($i = 0, $c = count($new); $i < $c; ++$i) {
+            if (!array_key_exists($i, $new)) {
+                continue;
+            }
+
             $ace = $new[$i];
+            if (null === $ace) {
+                continue;
+            }
 
             if (null !== $ace->getId()) {
                 $currentIds[$ace->getId()] = true;
@@ -982,7 +989,14 @@ QUERY;
         }
 
         for ($i = 0, $c = count($old); $i < $c; ++$i) {
+            if (!array_key_exists($i, $old)) {
+                continue;
+            }
+
             $ace = $old[$i];
+            if (null === $ace) {
+                continue;
+            }
 
             if (!isset($currentIds[$ace->getId()])) {
                 $this->connection->executeQuery($this->getDeleteAccessControlEntrySql($ace->getId()));

@@ -908,6 +908,8 @@ QUERY;
     private function updateNewAceProperty($name, array $changes)
     {
         [$old, $new] = $changes;
+        $old = array_values($old_raw);
+        $new = array_values($new_raw);
 
         $sids = new \SplObjectStorage();
         $classIds = new \SplObjectStorage();
@@ -949,10 +951,19 @@ QUERY;
     private function updateOldAceProperty($name, array $changes)
     {
         [$old, $new] = $changes;
+        $old = array_values($old_raw);
+        $new = array_values($new_raw);
         $currentIds = [];
 
         for ($i = 0, $c = \count($new); $i < $c; ++$i) {
+            if (!array_key_exists($i, $new)) {
+                continue;
+            }
+
             $ace = $new[$i];
+            if (null === $ace) {
+                continue;
+            }
 
             if (null !== $ace->getId()) {
                 $currentIds[$ace->getId()] = true;
@@ -960,7 +971,14 @@ QUERY;
         }
 
         for ($i = 0, $c = \count($old); $i < $c; ++$i) {
+            if (!array_key_exists($i, $old)) {
+                continue;
+            }
+
             $ace = $old[$i];
+            if (null === $ace) {
+                continue;
+            }
 
             if (!isset($currentIds[$ace->getId()])) {
                 $this->connection->executeStatement($this->getDeleteAccessControlEntrySql($ace->getId()));

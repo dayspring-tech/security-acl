@@ -907,7 +907,7 @@ QUERY;
      */
     private function updateNewAceProperty($name, array $changes)
     {
-        [$old, $new] = $changes;
+        [$old_raw, $new_raw] = $changes;
         $old = array_values($old_raw);
         $new = array_values($new_raw);
 
@@ -950,7 +950,7 @@ QUERY;
      */
     private function updateOldAceProperty($name, array $changes)
     {
-        [$old, $new] = $changes;
+        [$old_raw, $new_raw] = $changes;
         $old = array_values($old_raw);
         $new = array_values($new_raw);
         $currentIds = [];
